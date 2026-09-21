@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Azure Static Web Apps - Demo Showcase</title>
+  <title>Azure Static Web Apps + Azure Functions</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -147,7 +147,7 @@
     .hero p {
       color: var(--text-muted);
       font-size: 1.1rem;
-      max-width: 650px;
+      max-width: 680px;
       margin: 0 auto;
       line-height: 1.6;
     }
@@ -291,6 +291,15 @@
       background: #106ebe;
     }
 
+    .btn-gradient {
+      background: var(--accent-gradient);
+      color: white;
+      box-shadow: 0 4px 16px rgba(0, 120, 212, 0.3);
+    }
+    .btn-gradient:hover {
+      filter: brightness(1.1);
+    }
+
     .btn-github {
       background: #24292e;
       color: white;
@@ -359,28 +368,46 @@
     <header>
       <div class="brand">
         <div class="logo-icon">SWA</div>
-        <div class="brand-title">Azure <span>Static Web Apps</span></div>
+        <div class="brand-title">Azure <span>Static Web Apps + Functions</span></div>
       </div>
       <div class="status-pill">
         <span class="status-dot"></span>
-        SWA Emulator Active (:4280)
+        Full-stack Serverless Live
       </div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
-      <div class="hero-badge">Local Development Demo</div>
-      <h1>Trải nghiệm Azure Static Web Apps</h1>
-      <p>Ứng dụng mẫu tích hợp đầy đủ tính năng cốt lõi: Mock Authentication, Role-based Access Control (RBAC), Routing Rules và Static Web Hosting.</p>
+      <div class="hero-badge">Full-Stack Serverless Demo</div>
+      <h1>Azure Static Web Apps + Functions</h1>
+      <p>Mô hình Serverless chuẩn của Microsoft: Frontend tĩnh toàn cầu kết hợp Backend Azure Functions tự động định tuyến không cần CORS.</p>
     </section>
 
     <!-- Main Features Grid -->
     <div class="grid">
-      <!-- Card 1: Authentication -->
+      <!-- Card 1: Azure Functions (NEW) -->
+      <div class="card" style="border-color: rgba(0, 188, 255, 0.35);">
+        <div class="card-header">
+          <div class="card-icon">⚡</div>
+          <div class="card-title">Azure Functions Backend API</div>
+        </div>
+        
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1rem; line-height: 1.5;">
+          Gọi trực tiếp API <code>/api/GetMessage</code> không cần cấu hình CORS hay port riêng:
+        </p>
+
+        <pre class="code-box" id="api-result" style="margin-bottom: 1rem;">// Bấm nút bên dưới để gọi API...</pre>
+
+        <button class="btn btn-gradient" style="width: 100%;" onclick="callApi()">
+          🚀 Gọi API (/api/GetMessage)
+        </button>
+      </div>
+
+      <!-- Card 2: Authentication -->
       <div class="card">
         <div class="card-header">
           <div class="card-icon">🔐</div>
-          <div class="card-title">Xác thực giả lập (Auth Mock)</div>
+          <div class="card-title">Xác thực người dùng (Auth)</div>
         </div>
         
         <div class="user-profile" id="user-profile-box">
@@ -397,39 +424,39 @@
         </div>
 
         <div class="btn-group" id="auth-actions">
-          <a href="/.auth/login/aad" class="btn btn-azure">Đăng nhập Microsoft Entra (AAD)</a>
           <a href="/.auth/login/github" class="btn btn-github">Đăng nhập GitHub</a>
+          <a href="/.auth/login/aad" class="btn btn-azure">Đăng nhập Microsoft Entra</a>
           <a href="/.auth/logout" class="btn btn-danger" id="logout-btn" style="display: none;">Đăng xuất</a>
         </div>
       </div>
 
-      <!-- Card 2: RBAC Protection -->
+      <!-- Card 3: RBAC Protection -->
       <div class="card">
         <div class="card-header">
           <div class="card-icon">🛡️</div>
-          <div class="card-title">Phân quyền (RBAC Test)</div>
+          <div class="card-title">Phân quyền (RBAC Route)</div>
         </div>
 
         <div class="alert-box">
-          💡 Trang <strong>/admin.html</strong> chỉ cấp quyền truy cập nếu tài khoản của bạn có role là <strong>admin</strong> (được định nghĩa trong <code>staticwebapp.config.json</code>).
+          💡 Trang <strong>/admin.html</strong> yêu cầu role <strong>admin</strong>.
         </div>
 
         <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.2rem; line-height: 1.5;">
-          Hãy thử đăng nhập với role <code>admin</code> (trong giao diện mock) để vào trang quản trị, hoặc thử bấm vào link khi chưa có quyền:
+          Quy tắc kiểm tra role được thực thi ở tầng CDN Edge trước khi tải trang:
         </p>
 
         <a href="/admin.html" class="btn btn-outline" style="width: 100%;">Truy cập trang Quản Trị (/admin.html) →</a>
       </div>
 
-      <!-- Card 3: Endpoint Debugger -->
+      <!-- Card 4: Endpoint Debugger -->
       <div class="card">
         <div class="card-header">
-          <div class="card-icon">⚡</div>
+          <div class="card-icon">🔍</div>
           <div class="card-title">Thông tin /.auth/me (JSON)</div>
         </div>
 
         <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.8rem;">
-          Dữ liệu JSON trả về trực tiếp từ endpoint nội bộ của Azure SWA:
+          Dữ liệu JSON từ endpoint auth nội bộ:
         </p>
 
         <pre class="code-box" id="auth-json">{ "loading": true }</pre>
@@ -440,21 +467,8 @@
       </div>
     </div>
 
-    <!-- Instructions / Tips -->
-    <div class="card" style="margin-bottom: 2.5rem;">
-      <div class="card-header">
-        <div class="card-icon">📖</div>
-        <div class="card-title">Cách chạy & tùy biến trên máy của bạn</div>
-      </div>
-      <ol style="margin-left: 1.5rem; color: var(--text-muted); line-height: 1.8; font-size: 0.92rem;">
-        <li>Khi bấm vào nút <strong>Đăng nhập</strong>, SWA CLI sẽ chuyển hướng bạn tới trang mock. Bạn có thể tự gõ Username và thêm role <code>admin</code>.</li>
-        <li>Tập tin cấu hình quyền được đặt tại <code>public/staticwebapp.config.json</code>.</li>
-        <li>Lệnh khởi chạy nhanh: <code>swa start ./public</code> hoặc dùng file config <code>swa start</code>.</li>
-      </ol>
-    </div>
-
     <footer>
-      Azure Static Web Apps CLI Demo • Powered by Google Antigravity & SWA CLI
+      Azure Static Web Apps + Azure Functions Demo • Hosted on Microsoft Azure Cloud
     </footer>
   </div>
 
@@ -474,7 +488,6 @@
 
         const clientPrincipal = data.clientPrincipal;
         if (clientPrincipal) {
-          // Logged in
           userNameEl.textContent = clientPrincipal.userDetails || 'Người dùng';
           userProviderEl.textContent = 'Đã xác thực qua ' + clientPrincipal.identityProvider;
           avatarEl.textContent = (clientPrincipal.userDetails || 'U')[0].toUpperCase();
@@ -490,7 +503,6 @@
             rolesContainer.appendChild(span);
           });
         } else {
-          // Anonymous
           userNameEl.textContent = 'Khách vãng lai';
           userProviderEl.textContent = 'Chưa đăng nhập';
           avatarEl.textContent = '?';
@@ -504,8 +516,26 @@
       }
     }
 
+    async function callApi() {
+      const apiResultEl = document.getElementById('api-result');
+      apiResultEl.textContent = '⏳ Đang gọi API /api/GetMessage...';
+      try {
+        const res = await fetch('/api/GetMessage');
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+        }
+        const data = await res.json();
+        apiResultEl.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        apiResultEl.textContent = '❌ Lỗi gọi API: ' + err.message + '\n(Ghi chú: Nếu đang ở Local, cần chạy kèm cờ --api-location ./api)';
+      }
+    }
+
     // Run on load
-    window.addEventListener('DOMContentLoaded', checkAuth);
+    window.addEventListener('DOMContentLoaded', () => {
+      checkAuth();
+      callApi(); // Auto test API on load
+    });
   </script>
 </body>
 </html>

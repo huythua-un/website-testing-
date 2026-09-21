@@ -1,0 +1,9 @@
+﻿{
+  "name": "sample-api",
+  "version": "1.0.0",
+  "description": "Azure Functions API for Azure Static Web Apps",
+  "scripts": {
+    "start": "func start"
+  },
+  "dependencies": {}
+}
