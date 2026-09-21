@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/staticwebapp.config.json",
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/images/*", "*.{css,js,json,ico,png}"]
+  },
+  "routes": [
+    {
+      "route": "/admin.html",
+      "allowedRoles": ["admin"]
+    }
+  ],
+  "responseOverrides": {
+    "401": {
+      "redirect": "/.auth/login/aad",
+      "statusCode": 302
+    }
+  },
+  "globalHeaders": {
+    "content-security-policy": "default-src https: 'unsafe-eval' 'unsafe-inline'; style-src https: 'unsafe-inline' fonts.googleapis.com; font-src https: fonts.gstatic.com;"
+  }
+}

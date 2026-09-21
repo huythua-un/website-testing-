@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Azure Static Web Apps - Demo Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(23, 32, 54, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-azure: #0078d4;
+      --accent-glow: #00bcff;
+      --accent-gradient: linear-gradient(135deg, #0078d4 0%, #00bcff 50%, #7928ca 100%);
+      --text-main: #f3f6fc;
+      --text-muted: #8e9bb5;
+      --badge-bg: rgba(0, 188, 255, 0.12);
+      --badge-text: #38bdf8;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(0, 120, 212, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 85% 75%, rgba(121, 40, 202, 0.15) 0%, transparent 40%);
+      background-attachment: fixed;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 1050px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 2.5rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--accent-gradient);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(0, 120, 212, 0.35);
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: white;
+    }
+
+    .brand-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-title span {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.9rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: 999px;
+      color: #34d399;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #10b981;
+      box-shadow: 0 0 10px #10b981;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 0.35rem 1rem;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(0, 188, 255, 0.2);
+    }
+
+    .hero h1 {
+      font-size: 2.6rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 650px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Grid layout */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(16px);
+      border-radius: 18px;
+      padding: 1.8rem;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      border-color: rgba(0, 188, 255, 0.3);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    /* Auth Box */
+    .user-profile {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 12px;
+      padding: 1.2rem;
+      margin-bottom: 1.2rem;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .user-status {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #94a3b8;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .user-info h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .user-info p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .roles-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+    }
+
+    .role-tag {
+      font-size: 0.72rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+    }
+
+    .role-admin {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.2rem;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-azure {
+      background: #0078d4;
+      color: white;
+    }
+    .btn-azure:hover {
+      background: #106ebe;
+    }
+
+    .btn-github {
+      background: #24292e;
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .btn-github:hover {
+      background: #2f363d;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--card-border);
+    }
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.25);
+    }
+
+    /* Console / Code Block */
+    .code-box {
+      background: #060911;
+      border-radius: 12px;
+      padding: 1rem;
+      font-family: 'Consolas', monospace;
+      font-size: 0.8rem;
+      color: #93c5fd;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      overflow-x: auto;
+      max-height: 180px;
+    }
+
+    /* RBAC Notice */
+    .alert-box {
+      padding: 0.9rem;
+      border-radius: 10px;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      color: #fcd34d;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    footer {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Navigation Bar -->
+    <header>
+      <div class="brand">
+        <div class="logo-icon">SWA</div>
+        <div class="brand-title">Azure <span>Static Web Apps</span></div>
+      </div>
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        SWA Emulator Active (:4280)
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-badge">Local Development Demo</div>
+      <h1>Trải nghiệm Azure Static Web Apps</h1>
+      <p>Ứng dụng mẫu tích hợp đầy đủ tính năng cốt lõi: Mock Authentication, Role-based Access Control (RBAC), Routing Rules và Static Web Hosting.</p>
+    </section>
+
+    <!-- Main Features Grid -->
+    <div class="grid">
+      <!-- Card 1: Authentication -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">🔐</div>
+          <div class="card-title">Xác thực giả lập (Auth Mock)</div>
+        </div>
+        
+        <div class="user-profile" id="user-profile-box">
+          <div class="user-status">
+            <div class="avatar" id="avatar">?</div>
+            <div class="user-info">
+              <h4 id="user-name">Đang kiểm tra...</h4>
+              <p id="user-provider">Chưa đăng nhập</p>
+            </div>
+          </div>
+          <div class="roles-list" id="roles-container">
+            <span class="role-tag">anonymous</span>
+          </div>
+        </div>
+
+        <div class="btn-group" id="auth-actions">
+          <a href="/.auth/login/aad" class="btn btn-azure">Đăng nhập Microsoft Entra (AAD)</a>
+          <a href="/.auth/login/github" class="btn btn-github">Đăng nhập GitHub</a>
+          <a href="/.auth/logout" class="btn btn-danger" id="logout-btn" style="display: none;">Đăng xuất</a>
+        </div>
+      </div>
+
+      <!-- Card 2: RBAC Protection -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">🛡️</div>
+          <div class="card-title">Phân quyền (RBAC Test)</div>
+        </div>
+
+        <div class="alert-box">
+          💡 Trang <strong>/admin.html</strong> chỉ cấp quyền truy cập nếu tài khoản của bạn có role là <strong>admin</strong> (được định nghĩa trong <code>staticwebapp.config.json</code>).
+        </div>
+
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.2rem; line-height: 1.5;">
+          Hãy thử đăng nhập với role <code>admin</code> (trong giao diện mock) để vào trang quản trị, hoặc thử bấm vào link khi chưa có quyền:
+        </p>
+
+        <a href="/admin.html" class="btn btn-outline" style="width: 100%;">Truy cập trang Quản Trị (/admin.html) →</a>
+      </div>
+
+      <!-- Card 3: Endpoint Debugger -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">⚡</div>
+          <div class="card-title">Thông tin /.auth/me (JSON)</div>
+        </div>
+
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.8rem;">
+          Dữ liệu JSON trả về trực tiếp từ endpoint nội bộ của Azure SWA:
+        </p>
+
+        <pre class="code-box" id="auth-json">{ "loading": true }</pre>
+
+        <button class="btn btn-outline" style="margin-top: 1rem; width: 100%; font-size: 0.8rem;" onclick="checkAuth()">
+          🔄 Làm mới dữ liệu Auth
+        </button>
+      </div>
+    </div>
+
+    <!-- Instructions / Tips -->
+    <div class="card" style="margin-bottom: 2.5rem;">
+      <div class="card-header">
+        <div class="card-icon">📖</div>
+        <div class="card-title">Cách chạy & tùy biến trên máy của bạn</div>
+      </div>
+      <ol style="margin-left: 1.5rem; color: var(--text-muted); line-height: 1.8; font-size: 0.92rem;">
+        <li>Khi bấm vào nút <strong>Đăng nhập</strong>, SWA CLI sẽ chuyển hướng bạn tới trang mock. Bạn có thể tự gõ Username và thêm role <code>admin</code>.</li>
+        <li>Tập tin cấu hình quyền được đặt tại <code>public/staticwebapp.config.json</code>.</li>
+        <li>Lệnh khởi chạy nhanh: <code>swa start ./public</code> hoặc dùng file config <code>swa start</code>.</li>
+      </ol>
+    </div>
+
+    <footer>
+      Azure Static Web Apps CLI Demo • Powered by Google Antigravity & SWA CLI
+    </footer>
+  </div>
+
+  <script>
+    async function checkAuth() {
+      const authJsonEl = document.getElementById('auth-json');
+      const userNameEl = document.getElementById('user-name');
+      const userProviderEl = document.getElementById('user-provider');
+      const avatarEl = document.getElementById('avatar');
+      const rolesContainer = document.getElementById('roles-container');
+      const logoutBtn = document.getElementById('logout-btn');
+
+      try {
+        const res = await fetch('/.auth/me');
+        const data = await res.json();
+        authJsonEl.textContent = JSON.stringify(data, null, 2);
+
+        const clientPrincipal = data.clientPrincipal;
+        if (clientPrincipal) {
+          // Logged in
+          userNameEl.textContent = clientPrincipal.userDetails || 'Người dùng';
+          userProviderEl.textContent = 'Đã xác thực qua ' + clientPrincipal.identityProvider;
+          avatarEl.textContent = (clientPrincipal.userDetails || 'U')[0].toUpperCase();
+          avatarEl.style.background = '#0078d4';
+          avatarEl.style.color = '#fff';
+          logoutBtn.style.display = 'inline-flex';
+
+          rolesContainer.innerHTML = '';
+          (clientPrincipal.userRoles || []).forEach(role => {
+            const span = document.createElement('span');
+            span.className = 'role-tag ' + (role === 'admin' ? 'role-admin' : '');
+            span.textContent = role;
+            rolesContainer.appendChild(span);
+          });
+        } else {
+          // Anonymous
+          userNameEl.textContent = 'Khách vãng lai';
+          userProviderEl.textContent = 'Chưa đăng nhập';
+          avatarEl.textContent = '?';
+          avatarEl.style.background = '#1e293b';
+          avatarEl.style.color = '#94a3b8';
+          logoutBtn.style.display = 'none';
+          rolesContainer.innerHTML = '<span class="role-tag">anonymous</span>';
+        }
+      } catch (err) {
+        authJsonEl.textContent = 'Lỗi truy vấn /.auth/me: ' + err.message;
+      }
+    }
+
+    // Run on load
+    window.addEventListener('DOMContentLoaded', checkAuth);
+  </script>
+</body>
+</html>

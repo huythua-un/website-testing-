@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Khu vực Quản trị - SWA Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(23, 32, 54, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-gradient: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+      --text-main: #f3f6fc;
+      --text-muted: #8e9bb5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background-image: radial-gradient(circle at 50% 30%, rgba(239, 68, 68, 0.15) 0%, transparent 50%);
+    }
+
+    .card {
+      max-width: 580px;
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 2.5rem;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .info-box {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: left;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.6rem;
+      border-radius: 10px;
+      background: #0078d4;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s ease;
+    }
+    .btn:hover {
+      background: #106ebe;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="badge">🔒 Restricted Area</div>
+    <h1>Chào mừng Quản trị viên (Admin)!</h1>
+    <p>Nếu bạn thấy trang này, nghĩa là Azure Static Web Apps đã xác thực thành công bạn có role <strong>admin</strong>.</p>
+    
+    <div class="info-box">
+      <strong>Quy tắc trong staticwebapp.config.json:</strong>
+      <pre style="color: #93c5fd; margin-top: 0.5rem; font-family: monospace;">
+{
+  "route": "/admin.html",
+  "allowedRoles": ["admin"]
+}</pre>
+    </div>
+
+    <a href="/index.html" class="btn">← Quay lại Trang Chủ</a>
+  </div>
+</body>
+</html>
